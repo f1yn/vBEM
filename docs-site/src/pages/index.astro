@@ -1,0 +1,70 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Logo from "@/components/Logo.astro";
+
+---
+
+<Layout title="vBEM" subtitle="Variance-Based Block Element Modifier" class="home-page">
+	<section>
+		<h2 class="home-page__title">
+			<Logo size="hero" />
+		</h2>
+		<p class="home-page__subtitle">
+			The styling protocol built for human velocity and AI predictability. 
+		</p>
+		<p class="home-page__blurb">
+			By treating CSS variables as strict visual contracts, vBEM bridges the gap between standard BEM encapsulation and utility-first speed. Eliminate DOM pollution, isolate component scope, and end specificity wars.
+			<br /><br />
+			<strong>Ship deterministic UI that AI agents can perfectly refactor, and your coworkers team actually wants to read.</strong>
+		</p>
+		<div class="home-page__cta">
+			<a href="/intro" class="button button--primary">
+				Read the Protocol
+			</a>
+			<a
+				href="https://github.com/f1yn/vBEM"
+				class="button button--secondary"
+				target="_blank"
+			>
+				GitHub
+			</a>
+		</div>
+	</section>
+</Layout>
+
+<style lang="scss" is:global>
+	.home-page {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		& > section {
+			display: flex;
+			flex-direction: column;
+			width: calc(100% - var(--spacing-6));
+			max-width: 800px;
+			gap: var(--spacing-5);
+		}
+
+		&__subtitle {
+			font-size: var(--font-size-7);
+			color: var(--color-text-emphasis);
+		}
+
+		&__blurb {
+			font-weight: 600;
+			font-size: var(--font-size-4);
+			color: var(--color-primary-darker);
+
+			strong {
+				font-weight: inherit;
+				color: var(--color-text-emphasis);
+			}
+		}
+
+		&__cta {
+			display: flex;
+			gap: var(--spacing-4);
+		}
+	}
+</style>

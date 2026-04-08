@@ -1,0 +1,15 @@
+---
+import { getEntry, render } from "astro:content";
+
+import Layout from "@/layouts/Layout.astro";
+import DocContent from "@/components/DocContent.astro";
+
+const readme = await getEntry('rootDocs', 'readme')!;
+const { Content } = await render(readme);
+---
+
+<Layout title="Introduction" subtitle="vBEM Overview">
+	<DocContent>
+		<Content />
+	</DocContent>
+</Layout>

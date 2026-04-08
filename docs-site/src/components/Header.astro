@@ -1,0 +1,141 @@
+---
+import Logo from "./Logo.astro";
+import { SquareMenuIcon } from '@lucide/astro';
+
+const { class: className } = Astro.props;
+---
+
+<header class:list={["header", className]}>
+	<div>
+	<button class="button header__sidebar-toggle" title="Toggle menu">
+		<SquareMenuIcon size={30} />
+	</button>
+	<h1 class="header__title">
+		<a href="/" aria-label="Return to vBEM Home">
+			<Logo size="header" />
+		</a>
+	</h1>
+	</div>
+	<div>
+		<a class="header__link header__link-gh" href="https://github.com/f1yn/vBEM" title="Visit our GitHub">
+			<svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="10 10 82 82"><path fill="currentColor" fill-rule="evenodd" d="M49.998 11.963C28.461 11.963 11 29.425 11 50.965c0 17.231 11.172 31.849 26.671 37.003c1.952.361 2.662-.84 2.662-1.877c0-.924-.034-3.375-.051-6.633c-10.849 2.359-13.138-5.229-13.138-5.229c-1.774-4.505-4.331-5.703-4.331-5.703c-3.541-2.418.269-2.371.269-2.371c3.914.277 5.974 4.018 5.974 4.018c3.478 5.96 9.129 4.235 11.35 3.243c.353-2.525 1.363-4.24 2.476-5.217c-8.659-.984-17.763-4.33-17.763-19.274c0-4.259 1.519-7.741 4.013-10.468c-.399-.982-1.74-4.947.383-10.319c0 0 3.274-1.048 10.726 4.001c3.109-.869 6.446-1.303 9.763-1.316c3.312.014 6.65.447 9.763 1.316c7.447-5.049 10.716-4.001 10.716-4.001c2.128 5.372.788 9.337.388 10.319c2.5 2.727 4.008 6.209 4.008 10.468c0 14.979-9.117 18.279-17.805 19.241c1.398 1.205 2.646 3.59 2.646 7.229c0 5.211-.047 9.416-.047 10.695c0 1.045.701 2.26 2.681 1.873C77.836 82.798 89 68.191 89 50.965c0-21.54-17.461-39.002-39.002-39.002" clip-rule="evenodd"/></svg>
+		</a>
+		<a class="header__link header__link--flynn" href="https://flyn.ca" title="Visit my website">
+			<img src="/flynn.png" height="24" />
+		</a>
+	</div>
+</header>
+
+<style lang="scss" is:global>
+	.header {
+		padding: 0 var(--spacing-4);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background-color: var(--color-header);
+
+		& > div {
+			display: flex;
+			gap: var(--spacing-3);
+		}
+
+		&__sidebar-toggle {
+			--display: none;
+			--padding-y: var(--spacing-2);
+			--padding-x: var(--spacing-1);
+			--background: var(--color-background);
+
+			display: var(--display);
+
+			:root.alive & {
+				@include breakpointBefore('tablet') {
+					--display: flex;
+				}
+			}
+		}
+
+		&__title {
+			display: flex;
+
+			& > a {
+				display: contents;
+			}
+		}
+
+		&__link {
+			--size: 52px;
+			--opacity: .5;
+
+			width: var(--size);
+			height: var(--size);
+			opacity: var(--opacity);
+
+			display: flex;
+			align-items: center;
+			position: relative;
+			transition: opacity var(--transition-2);
+
+			&:hover {
+				--opacity: 1;
+			}
+
+			&,
+			&:visited {
+				color: inherit;
+			}
+
+			&--flynn {
+				img {
+					image-rendering: pixelated;
+   					filter: contrast(1);
+				}
+
+				&:before {
+					content: "";
+					position: absolute;
+					display: block;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					border-radius: 50%;
+					background: linear-gradient(90deg, rgba(0,0,0,.2), rgba(255,255,255,.2))
+				}
+			}
+		}
+	}
+</style>
+
+<script>
+	const sidebarContentElement = document.querySelector('.sidebar__content');
+
+	document.querySelectorAll<HTMLButtonElement>('.header__sidebar-toggle').forEach((button) => {
+		function onBlurClick(e: MouseEvent) {
+			const target = e.target as HTMLElement;
+
+			// Avoid processing the toggle button
+			if (button.contains(target)) {
+				return;
+			}
+
+			// If we blue the open nav, remove the root modifier flag
+			if (!sidebarContentElement?.contains(target)) {
+				document.documentElement.classList.remove('mobile-show-sidebar');
+			}
+		}
+
+		button.addEventListener('click', () => {
+			// WHen the to
+			const { classList } = document.documentElement;
+			const alreadyOpen = classList.contains('mobile-show-sidebar')
+
+			if (alreadyOpen) {
+				classList.remove('mobile-show-sidebar');
+				window.removeEventListener('click', onBlurClick);
+			} else {
+				classList.add('mobile-show-sidebar');
+				window.addEventListener('click', onBlurClick);
+			}
+		})
+	})
+</script>

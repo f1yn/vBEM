@@ -1,0 +1,74 @@
+---
+import '@/styles/root.scss';
+
+import Font from 'astro/components/Font.astro';
+import Header from "@/components/Header.astro";
+import Sidebar from "@/components/Sidebar.astro";
+
+interface Props {
+	title: string;
+	subtitle?: string;
+	class?: string;
+	hideSidebar?: boolean;
+}
+
+const { title = "vBEM Documentation", class: className, hideSidebar } = Astro.props;
+const { pathname } = Astro.url;
+
+const rootFlags = [
+	pathname === '/' && 'home-page',
+	pathname.startsWith('/doc') && 'doc-page',
+	pathname === '/intro' && 'intro-page',
+
+].filter(Boolean) as string[]
+
+---
+
+<html lang="en" class:list={rootFlags}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<Font cssVariable="--font-heading" />
+		<title>{title} - vBEM Documentation</title>
+			<script is:inline>document.documentElement.classList.add('alive')</script>
+	</head>
+	<body class="layout">
+		<Header class="layout__header" />
+		{!hideSidebar && <Sidebar class="layout__side" />}
+		<main class:list={["layout__main", className]}>
+			<slot />
+		</main>
+	</body>
+</html>
+<style lang="scss" is:global>
+	.layout {
+		--sidebar-scale: 1;
+		--sidebar-real-size: calc(var(--sidebar-scale) * var(--sidebar-size));
+
+		display: grid;
+		grid-template-columns: var(--sidebar-real-size) 1fr;
+		grid-template-rows: 80px 1fr;
+
+		&__header {
+			height: 80px;
+			grid-column: span 2;
+		}
+
+		&__main {
+			overflow-y: auto;
+		}
+
+		// IMPORTANT: On mobile, the sidebar should take up no physical space!
+		// IMPORTANT: Only when JS is enabled!
+		:root.alive & {
+			@include breakpointBefore('tablet') {
+				--sidebar-scale: 0;
+			}
+		}
+
+		// IMPORTANT: Root layout modifiers
+		:root.home-page & {
+			--sidebar-scale: 0;
+		}
+	}
+</style>

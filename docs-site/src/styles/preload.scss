@@ -1,0 +1,93 @@
+// PRELOAD MODULE - DO NOT IMPORT
+
+@use "sass:map";
+@use "sass:meta";
+
+$mobileBreakpoint: 540px;
+$tabletBreakpoint: 750px;
+$desktopBreakpoint: 1200px;
+
+$breakpoints: (
+	"mobile": (
+		min: $mobileBreakpoint,
+		max: $tabletBreakpoint,
+	),
+	"tablet": (
+		min: $tabletBreakpoint,
+		max: $desktopBreakpoint,
+	),
+	"desktop": (
+		min: $desktopBreakpoint,
+	),
+);
+
+@mixin breakpoint($namedBreakpoint) {
+	$range: map.get($breakpoints, $namedBreakpoint);
+
+	@if $range {
+		$min: map.get($range, min);
+		$max: map.get($range, max);
+
+		@if not $max {
+			@media screen and (min-width: $min) {
+				@content;
+			}
+		} @else {
+			@media screen and (min-width: $min) and (max-width: $max) {
+				@content;
+			}
+		}
+	}
+}
+
+@mixin breakpointAfter($namedBreakpoint) {
+	$range: map.get($breakpoints, $namedBreakpoint);
+
+	@if $range {
+		$min: map.get($range, min);
+
+		@media screen and (min-width: $min) {
+			@content;
+		}
+	}
+}
+
+@mixin breakpointBefore($namedBreakpoint) {
+	$range: map.get($breakpoints, $namedBreakpoint);
+
+	@if $range {
+		$max: map.get($range, max);
+
+		@media screen and (max-width: $max) {
+			@content;
+		}
+	}
+}
+
+@mixin breakpointUpTo($namedBreakpoint) {
+	$range: map.get($breakpoints, $namedBreakpoint);
+
+	@if $range {
+		$max: map.get($range, min);
+
+		@media screen and (max-width: $max) {
+			@content;
+		}
+	}
+}
+
+@mixin whenDark($allDark: true) {
+	@media (prefers-color-scheme: dark) {
+		@content;
+	}
+
+	:root[data-theme="dark"] & {
+		@content;
+	}
+
+	@if $allDark {
+		:root[data-theme="darkest"] & {
+			@content;
+		}
+	}
+}

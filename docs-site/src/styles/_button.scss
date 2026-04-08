@@ -1,0 +1,57 @@
+.button {
+	--padding-x: var(--spacing-3);
+	--padding-y: var(--spacing-3);
+	--color: var(--color-text);
+	--background: var(--color-primary-lightest);
+	--radius: var(--radius-1);
+	--font-size: var(--font-size-4);
+	--l-space: 3%;
+	--border-color: var(--background);
+
+	padding: var(--padding-y) var(--padding-x);
+	color: var(--color);
+	background: var(--background);
+	border-radius: var(--radius);
+	font-size: var(--font-size);
+	letter-spacing: var(--l-space);
+	border: solid 4px var(--border-color);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-1);
+	text-decoration: none;
+	font-weight: 600;
+	cursor: pointer;
+
+	transition:
+		color var(--transition-2),
+		background-color var(--transition-2),
+		border var(--transition-2);
+
+	&:visited {
+		color: var(--color);
+	}
+
+	&:hover {
+		--border-color: var(--color-primary-lighter);
+	}
+
+	&--primary {
+		--background: var(--color-interactive);
+		--color: #eee;
+
+		&:hover {
+			--border-color: var(--color-interactive-darker);
+		}
+	}
+
+	&--secondary {
+		--background: var(--color-text-emphasis);
+		--color: var(--color-text-inv);
+
+		&:hover {
+			--border-color: #444;
+		}
+	}
+}

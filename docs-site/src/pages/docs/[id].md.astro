@@ -1,0 +1,20 @@
+---
+import { getEntry, getCollection, render } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import DocContent from "@/components/DocContent.astro";
+
+export async function getStaticPaths() {
+	const docs = await getCollection("docs");
+	return docs.map((doc) => ({ params: { id: doc.id } }))
+}
+
+const doc = await getEntry('docs', Astro.params.id)!;
+const { Content } = await render(doc);
+
+---
+
+<Layout title={doc?.data.title || "Documentation"} subtitle={doc?.data.description || ""}>
+	<DocContent>
+		<Content />
+	</DocContent>
+</Layout>

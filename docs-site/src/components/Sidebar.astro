@@ -1,0 +1,119 @@
+---
+import { getCollection } from "astro:content";
+import { extractTitleFromRawMarkdown } from '@/common';
+
+const allDocs = await getCollection("docs");
+
+const path = Astro.url.pathname
+
+const pages = [
+	{ title: "Home", path: "/" },
+	{ title: "Introduction", path: "/intro" },
+	...allDocs.map((doc) => {
+		return {
+			title: extractTitleFromRawMarkdown(doc.body!),
+			path: `/docs/${doc.id}.md`,
+		}
+	}).reverse()
+];
+
+---
+
+<nav class:list={["sidebar", Astro.props.class]}>
+	<div class="sidebar__content">
+		<ul class="sidebar__list">
+			{pages.map((page) => (
+				<li class:list={["sidebar__item", path === page.path && 'sidebar__item--active']}>
+					<a href={page.path} class="sidebar__item__link">
+						{page.title}
+					</a>
+				</li>
+			))}
+		</ul>
+	</div>
+</nav>
+
+<style lang="scss" is:global>
+	.sidebar {
+		position: relative;
+
+		&__content {
+			--right: 0;
+			--box-shadow: none;
+
+			right: var(--right);
+			box-shadow: var(--box-shadow);
+
+			position: absolute;
+			padding: var(--spacing-4) 0;
+			top: 0;
+			width: var(--sidebar-size);
+			height: 100%;
+			overflow-y: auto;
+			background-color: var(--color-background);
+			border-right: solid 1px var(--color-primary-lightest);
+
+			transition: right var(--transition-2), box-shadow var(--transition-2);
+
+			// Shows the sidebar when toggled (on mobile)
+			@include breakpointBefore('tablet') {
+				:root.mobile-show-sidebar & {
+					--box-shadow: 5px 8px 12px rgba(0,0,0, .2);
+					--right: calc(var(--sidebar-size) * -1);
+				}
+			}
+		}
+
+		&__list {
+			display: flex;
+			flex-direction: column;
+			gap: var(--spacing-2);
+		}
+
+		&__item {
+			--accent: var(--color-primary);
+			--color: var(--color-primary-darkest);
+			--accent-width: 3px;
+
+			&--active {
+				--accent: var(--color-interactive);
+				--color: var(--color-text-emphasis);
+			}
+
+			&:hover {
+				--accent: var(--color-text-emphasis);
+				--accent-width: 5px;
+			}
+
+			&__link {
+				position: relative;
+				display: block;
+				padding: var(--spacing-3) var(--spacing-5);
+				text-decoration: none;
+				font-size: var(--font-size-4);
+				font-weight: 500;
+				color: var(--color);
+
+				&:visited {
+					color: var(--color);
+				}
+
+				transition: color var(--transition-1);
+
+				// accent block
+				&::after {
+					width: var(--accent-width);
+
+					display: block;
+					content: "";
+					position: absolute;
+					left: var(--spacing-2);
+					top: 0;
+					height: 100%;
+					background-color: var(--accent);
+					transition: background-color var(--transition-2), width var(--transition-2);
+				}
+			}
+		}
+	}
+</style>

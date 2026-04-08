@@ -1,0 +1,113 @@
+---
+---
+
+<section class="doc">
+    <slot />
+</section>
+
+<style lang="scss" is:global>
+    .doc {
+        --block-spacing: var(--spacing-4);
+        --block-spacing-multiplier: 1;
+        --block-line-height: 1.6;
+
+        margin: 0 auto;
+        max-width: 878px;
+        padding: var(--spacing-5);
+
+        & > h1,
+        & > h2,
+        & > h3,
+        & > h4, 
+        & > h5 {
+            --block-spacing-multiplier: 2;
+            --block-line-height: 1;
+
+            color: var(--color-text-emphasis);
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            letter-spacing: 3%;
+
+            & + p {
+                // leading paragraph handling
+                --block-spacing-multiplier: 2.5;
+             }
+        }
+
+        h1 {
+            font-size: var(--font-size-11);
+        }
+
+        h2 {
+            font-size: var(--font-size-10);
+        }
+
+        h3 {
+            font-size: var(--font-size-8);
+        }
+
+        h4 {
+            font-size: var(--font-size-7);
+        }
+
+        h5 {
+            font-size: var(--font-size-6);
+        }
+
+        & > blockquote {
+            border-left: solid 2px var(--color-blockquote);
+            padding-left: var(--spacing-5);
+        }
+
+        & > div[align] {
+            h1 { display: none }
+        }
+
+        ul,
+        ol {
+            padding-left: var(--spacing-5);
+
+            li {
+                --block-spacing-multiplier: .7;
+            }
+        }
+
+        // Element spacing apply
+        & > *,
+        ul li,
+        ol li {
+            line-height: var(--block-line-height);
+            margin-top: calc(var(--block-spacing) * var(--block-spacing-multiplier));
+        }
+
+        & > pre {
+            padding: var(--spacing-6);
+            font-size: var(--font-size-2);
+            border-radius: var(--radius-1);
+            tab-size: 4;
+        }
+
+        & > table {
+            display: block;
+            overflow-x: auto;
+            width: 100%;
+
+            td, th {
+                padding-top: var(--spacing-2);
+                padding-right: var(--spacing-2);
+            }
+        }
+
+        a {
+            color: inherit;
+
+            &:visited {
+                color: inherit;
+            }
+
+            &:hover {
+                color: var(--color-text-emphasis);
+            }
+        }
+    }
+</style>
