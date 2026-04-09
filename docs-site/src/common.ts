@@ -14,3 +14,12 @@ export function transformMarkdownLinks(data: { html: string }) {
         .replace(docsLinks, 'href="/docs')
         .replace(assetLinks, 'src="/')
 }
+
+const trailingSlash = /\/$/;
+
+export const normalizePath = (providedPath: string) => providedPath.replace(trailingSlash, '');
+
+export const isPathMatching = (pathA: string, pathB: string) => normalizePath(pathA) === normalizePath(pathB);
+
+export const isPathMatchCreator = (basePath: string) =>
+    (pathToCheck: string) => isPathMatching(basePath, pathToCheck);

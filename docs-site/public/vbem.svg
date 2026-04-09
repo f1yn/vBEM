@@ -23,13 +23,13 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="0.59134375"
-     inkscape:cx="377.95276"
-     inkscape:cy="261.26935"
-     inkscape:window-width="976"
+     inkscape:zoom="0.29567188"
+     inkscape:cx="182.63489"
+     inkscape:cy="884.42636"
+     inkscape:window-width="1152"
      inkscape:window-height="1186"
-     inkscape:window-x="0"
-     inkscape:window-y="25"
+     inkscape:window-x="2549"
+     inkscape:window-y="245"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
   <defs
@@ -44,9 +44,10 @@
        style="font-size:105.833px;line-height:0.9;font-family:'Pathway Gothic One';-inkscape-font-specification:'Pathway Gothic One';letter-spacing:-4.56142px;word-spacing:0px;fill:#999999;stroke-width:0.316738"
        aria-label="BEM" />
     <path
-       d="M 15.135583,6 41.604311,79.989758 40.474541,6 h 10.135584 l 0.06987,88.686354 H 38.010518 L 5,6 Z"
+       d="M 15.135583,32.39821 41.604311,79.989758 40.474541,32.39821 h 10.135584 l 0.06987,62.288144 H 38.010518 L 5,32.39821 Z"
        id="text2-3"
        style="font-size:105.833px;line-height:0.9;font-family:'Pathway Gothic One';-inkscape-font-specification:'Pathway Gothic One';white-space:pre;inline-size:78.4262;stroke-width:0.316738"
-       aria-label="V" />
+       aria-label="V"
+       sodipodi:nodetypes="cccccccc" />
   </g>
 </svg>

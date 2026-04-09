@@ -1,24 +1,24 @@
 ---
 import { getCollection } from "astro:content";
-import { extractTitleFromRawMarkdown } from '@/common';
+import { extractTitleFromRawMarkdown, isPathMatchCreator } from '@/common';
 
 const allDocs = await getCollection("docs");
 
 const path = Astro.url.pathname;
 
 const pages = [
-	{ title: "Home", path: "/" },
-	{ title: "Introduction", path: "/intro" },
+	{ title: "Home", path: "/", astroPath: '/' },
+	{ title: "Introduction", path: "/intro", astroPath: "/intro" },
 	...allDocs.map((doc) => {
 		return {
 			title: extractTitleFromRawMarkdown(doc.body!),
 			path: `/docs/${doc.id}.md`,
-			astroPath: `/docs/${doc.id}`
+			astroPath: `/docs/${doc.id}`,
 		}
 	}).reverse()
-] as { title: string, path: string, astroPath?: string }[]
+] as { title: string, path: string, astroPath: string }[]
 
-const isMatch = (page: typeof pages[number]) => path === page.astroPath || path === page.path;
+const isMatch = isPathMatchCreator(path);
 
 ---
 
@@ -26,7 +26,7 @@ const isMatch = (page: typeof pages[number]) => path === page.astroPath || path 
 	<div class="sidebar__content">
 		<ul class="sidebar__list">
 			{pages.map((page) => (
-				<li class:list={["sidebar__item", isMatch(page) && 'sidebar__item--active']}>
+				<li class:list={["sidebar__item", (isMatch(page.path) || isMatch(page.astroPath)) && 'sidebar__item--active']}>
 					<a href={page.path} class="sidebar__item__link">
 						{page.title}
 					</a>
