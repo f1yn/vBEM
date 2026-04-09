@@ -4,7 +4,7 @@ import { extractTitleFromRawMarkdown } from '@/common';
 
 const allDocs = await getCollection("docs");
 
-const path = Astro.url.pathname
+const path = Astro.url.pathname;
 
 const pages = [
 	{ title: "Home", path: "/" },
@@ -13,9 +13,12 @@ const pages = [
 		return {
 			title: extractTitleFromRawMarkdown(doc.body!),
 			path: `/docs/${doc.id}.md`,
+			astroPath: `/docs/${doc.id}`
 		}
 	}).reverse()
-];
+] as { title: string, path: string, astroPath?: string }[]
+
+const isMatch = (page: typeof pages[number]) => path === page.astroPath || path === page.path;
 
 ---
 
@@ -23,7 +26,7 @@ const pages = [
 	<div class="sidebar__content">
 		<ul class="sidebar__list">
 			{pages.map((page) => (
-				<li class:list={["sidebar__item", path === page.path && 'sidebar__item--active']}>
+				<li class:list={["sidebar__item", isMatch(page) && 'sidebar__item--active']}>
 					<a href={page.path} class="sidebar__item__link">
 						{page.title}
 					</a>

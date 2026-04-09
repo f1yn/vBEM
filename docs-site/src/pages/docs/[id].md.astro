@@ -2,6 +2,7 @@
 import { getEntry, getCollection, render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import DocContent from "@/components/DocContent.astro";
+import { transformMarkdownLinks } from "@/common";
 
 export async function getStaticPaths() {
 	const docs = await getCollection("docs");
@@ -9,12 +10,12 @@ export async function getStaticPaths() {
 }
 
 const doc = await getEntry('docs', Astro.params.id)!;
-const { Content } = await render(doc);
+transformMarkdownLinks(doc.rendered!);
 
 ---
 
 <Layout title={doc?.data.title || "Documentation"} subtitle={doc?.data.description || ""}>
 	<DocContent>
-		<Content />
+		<Fragment set:html={doc.rendered?.html} />
 	</DocContent>
 </Layout>

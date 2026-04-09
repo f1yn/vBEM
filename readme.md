@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="300" height="200" src="./vbem.svg" />
+  <img width="300" height="200" src="./docs-site/public/vbem.svg" />
   <br>
   <h1>vBEM</h1>
   <p>An architectural approach to styling that enforces constraint-driven development using scoped CSS variables, BEM modifiers, and variable delegation.</p>

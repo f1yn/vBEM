@@ -3,13 +3,14 @@ import { getEntry, render } from "astro:content";
 
 import Layout from "@/layouts/Layout.astro";
 import DocContent from "@/components/DocContent.astro";
+import { transformMarkdownLinks } from "@/common";
 
 const readme = await getEntry('rootDocs', 'readme')!;
-const { Content } = await render(readme);
+transformMarkdownLinks(readme.rendered!);
 ---
 
 <Layout title="Introduction" subtitle="vBEM Overview">
 	<DocContent>
-		<Content />
+		<Fragment set:html={readme.rendered?.html} />
 	</DocContent>
 </Layout>
