@@ -34,7 +34,8 @@ const isMatch = isPathMatchCreator(path);
 			))}
 		</ul>
 		<footer class="sidebar__footer">
-			<p>Built proudly with <strong>vBEM</strong> + <a href="https://astro.build/">Astro</a></p>
+			<p>Built proudly using <a href="https://astro.build/">Astro</a> with <strong>vBEM</strong></p>
+			<p>License: <a href="https://github.com/f1yn/vBEM/blob/main/LICENSE.md">MIT</a> | © <a href="https://flyn.ca/">Flynn</a> 2025-2026</p>
 		</footer>
 	</div>
 </nav>
@@ -126,10 +127,13 @@ const isMatch = isPathMatchCreator(path);
 		}
 
 		&__footer {
+			display: flex;
+			flex-direction: column;
 			padding: var(--spacing-3);
 			background-color: var(--color-header);
 			border-top: solid 1px var(--color-primary-lightest);
 			font-size: var(--font-size-2);
+			gap: var(--spacing-2);
 
 			// REFLECT: SCSS isn't a requirement for vBEM, but we might benefit
 			// from composites (using mixins)
