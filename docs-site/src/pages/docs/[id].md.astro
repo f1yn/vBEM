@@ -2,7 +2,7 @@
 import { getEntry, getCollection, render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import DocContent from "@/components/DocContent.astro";
-import { transformMarkdownLinks } from "@/common";
+import { transformMarkdownLinks, extractTitleFromRawMarkdown } from "@/common";
 
 export async function getStaticPaths() {
 	const docs = await getCollection("docs");
@@ -10,11 +10,12 @@ export async function getStaticPaths() {
 }
 
 const doc = await getEntry('docs', Astro.params.id)!;
+const title = extractTitleFromRawMarkdown(doc.body!);
 transformMarkdownLinks(doc.rendered!);
 
 ---
 
-<Layout title={doc?.data.title || "Documentation"} subtitle={doc?.data.description || ""}>
+<Layout title={title || "Documentation"} subtitle={doc?.data.description || ""}>
 	<DocContent>
 		<Fragment set:html={doc.rendered?.html} />
 	</DocContent>

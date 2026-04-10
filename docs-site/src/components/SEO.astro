@@ -1,0 +1,45 @@
+---
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+}
+
+const defaultTitle = "vBEM | The Agent-Ready Styling Architecture";
+const defaultDescription = "A styling architecture built for human velocity and agentic determinism. End specificity wars, eliminate DOM pollution, and ship AI-ready UI components.";
+
+const {
+	title = defaultTitle,
+	description = defaultDescription,
+	image = new URL("/og-image.png", Astro.site || Astro.url).href,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url).href;
+const formattedTitle = title === defaultTitle ? title : `${title} - vBEM`;
+
+---
+
+<meta charset="utf-8" />
+<meta name="generator" content={Astro.generator} />
+<link rel="canonical" href={canonicalURL} />
+<title>{formattedTitle}</title>
+<meta name="title" content={formattedTitle} />
+<meta name="description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={formattedTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<meta property="og:site_name" content="vBEM" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalURL} />
+<meta property="twitter:title" content={formattedTitle} />
+<meta 
+	property="twitter:description" 
+	content={
+		description === defaultDescription 
+			? "By treating CSS variables as strict visual contracts, vBEM bridges the gap between BEM encapsulation and utility-first speed. Built for humans and AI." 
+			: description
+	} 
+/>
+<meta property="twitter:image" content={image} />

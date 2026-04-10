@@ -1,6 +1,7 @@
 ---
 import '@/styles/root.scss';
 
+import SEO from '@/components/SEO.astro';
 import Font from 'astro/components/Font.astro';
 import Header from "@/components/Header.astro";
 import Sidebar from "@/components/Sidebar.astro";
@@ -30,7 +31,8 @@ const rootFlags = [
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<Font cssVariable="--font-heading" />
 		<title>{title} - vBEM Documentation</title>
-			<script is:inline>document.documentElement.classList.add('alive')</script>
+		<script is:inline>document.documentElement.classList.add('alive')</script>
+		<SEO title={title} />
 	</head>
 	<body class="layout">
 		<Header class="layout__header" />
