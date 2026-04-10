@@ -5,21 +5,22 @@ import Logo from "@/components/Logo.astro";
 ---
 
 <Layout title="vBEM" subtitle="Variance-Based Block Element Modifier" class="home-page">
+	<div class="home-page__spotlight" />
 	<section>
 		<h2 class="home-page__title">
 			<Logo size="hero" />
 		</h2>
 		<p class="home-page__subtitle">
-			The styling protocol built for human velocity and AI predictability. 
+			The design system architecture built for human velocity and agentic determinism. 
 		</p>
 		<p class="home-page__blurb">
-			By treating CSS variables as strict visual contracts, vBEM bridges the gap between standard BEM encapsulation and utility-first speed. Eliminate DOM pollution, isolate component scope, and end specificity wars.
+			Turn CSS variables into strict visual contracts. vBEM eliminates DOM pollution, isolates component scope, and <strong>ends specificity wars forever.</strong>
 			<br /><br />
-			<strong>Ship deterministic UI that AI agents can perfectly refactor, and your coworkers team actually wants to read.</strong>
+			Ship deterministic UI that AI agents can reliably generate, and your team actually wants to read.
 		</p>
 		<div class="home-page__cta">
 			<a href="/intro" class="button button--primary">
-				Read the Protocol
+				View the Standard
 			</a>
 			<a
 				href="https://github.com/f1yn/vBEM"
@@ -34,10 +35,13 @@ import Logo from "@/components/Logo.astro";
 
 <style lang="scss" is:global>
 	.home-page {
+		position: relative;
 		display: flex;
-		align-items: center;
+		align-items: safe center;
 		justify-content: center;
+		padding: var(--spacing-5) 0;
 
+		// We are using section as a literal semantic container here
 		& > section {
 			display: flex;
 			flex-direction: column;
@@ -52,12 +56,13 @@ import Logo from "@/components/Logo.astro";
 		}
 
 		&__blurb {
-			font-weight: 600;
+			font-weight: 400;
 			font-size: var(--font-size-4);
 			color: var(--color-primary-darker);
+			max-width: 600px;
 
 			strong {
-				font-weight: inherit;
+				font-weight: 600;
 				color: var(--color-text-emphasis);
 			}
 		}
@@ -65,6 +70,16 @@ import Logo from "@/components/Logo.astro";
 		&__cta {
 			display: flex;
 			gap: var(--spacing-4);
+			align-items: flex-start;
+		}
+
+		&__spotlight {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: -1;
 		}
 	}
 </style>

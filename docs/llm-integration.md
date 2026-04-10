@@ -11,6 +11,14 @@ When an LLM attempts to generate state-driven UI in standard CSS or Tailwind, it
 vBEM solves this by establishing a **Strict Visual Contract**.
 When an LLM reads a vBEM block, it immediately knows the component's exact mutable surface area. If you ask an AI to "Add a disabled state," it doesn't need to guess which properties to override; it simply references the contract at the top of the file and mutates the pre-existing variables.
 
+### 1.1 The Attention Mechanism Advantage
+
+To optimize AI generation, the architecture must accommodate the model's attention mechanism. LLMs struggle with utility-first CSS because the visual logic is coupled to the DOM. If an agent is prompted to "change the active state of the sidebar link," a Tailwind-based prompt forces the model to spread its attention across the entire JSX structure. This dilutes the signal-to-noise ratio, increasing the likelihood of hallucinations when injecting tokens into long class strings.
+
+vBEM removes the HTML from the model's reasoning loop entirely, providing a dense, pure **Key-Value Schema** (The Part 1 Contract).
+
+Because the signal-to-noise ratio of a vBEM contract is so high, it fundamentally lowers the parameter requirement for deterministic UI generation. In practice, this mechanical efficiency allows even highly quantized, smaller local models (e.g., 3B to 9B parameters) to reliably execute complex styling logic and state intersections that would typically overwhelm their attention spans in a utility-first stack.
+
 ## 2. IDE Configuration (Passive Guardrails)
 
 To prevent models from falling back on their generic training data (Tailwind/CSS-in-JS), you must inject vBEM protocol rules into your IDE's system prompt context.

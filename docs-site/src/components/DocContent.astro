@@ -6,7 +6,12 @@
 </section>
 
 <style lang="scss" is:global>
+	@use '@/styles/tokens.scss' as *;
+
     .doc {
+        // IMPORTANT: Here, we specify a few select rules for controlling the uncontrolled
+        // descendant elements. We configure a baseline for document formatting, but modify it
+        // on a case-by-case basis (i.e, do we want specific pairings to have specific)
         --block-spacing: var(--spacing-4);
         --block-spacing-multiplier: 1;
         --block-line-height: 1.6;
@@ -59,10 +64,6 @@
             padding-left: var(--spacing-5);
         }
 
-        & > div[align] {
-            h1 { display: none }
-        }
-
         ul,
         ol {
             padding-left: var(--spacing-5);
@@ -99,15 +100,28 @@
         }
 
         a {
-            color: inherit;
-
-            &:visited {
-                color: inherit;
-            }
+            @extend .link;
 
             &:hover {
-                color: var(--color-text-emphasis);
+                --color: var(--color-text-emphasis);
             }
+        }
+
+        strong  {
+            color: var(--color-text-emphasis);
+        }
+        
+        // FLAG: Classic style overrides for the root readme
+        & > div[align] {
+            h1 {
+                display: none
+            }
+
+            @include whenDark() {
+                & > img[src="/vbem.svg"] {
+                    filter: invert(1) brightness(1.3);
+                }
+            }   
         }
     }
 </style>

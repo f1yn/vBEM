@@ -33,10 +33,15 @@ const isMatch = isPathMatchCreator(path);
 				</li>
 			))}
 		</ul>
+		<footer class="sidebar__footer">
+			<p>Built proudly with <strong>vBEM</strong> + <a href="https://astro.build/">Astro</a></p>
+		</footer>
 	</div>
 </nav>
 
 <style lang="scss" is:global>
+	@use '@/styles/tokens.scss' as *;
+
 	.sidebar {
 		position: relative;
 
@@ -47,15 +52,16 @@ const isMatch = isPathMatchCreator(path);
 			right: var(--right);
 			box-shadow: var(--box-shadow);
 
+			display: flex;
+			flex-direction: column;
 			position: absolute;
-			padding: var(--spacing-4) 0;
 			top: 0;
+			z-index: 1;
 			width: var(--sidebar-size);
 			height: 100%;
 			overflow-y: auto;
-			background-color: var(--color-background);
+			background-color: var(--color-sidebar);
 			border-right: solid 1px var(--color-primary-lightest);
-
 			transition: right var(--transition-2), box-shadow var(--transition-2);
 
 			// Shows the sidebar when toggled (on mobile)
@@ -68,9 +74,11 @@ const isMatch = isPathMatchCreator(path);
 		}
 
 		&__list {
+			flex: 1;
 			display: flex;
 			flex-direction: column;
 			gap: var(--spacing-2);
+			padding: var(--spacing-4) 0;
 		}
 
 		&__item {
@@ -88,19 +96,17 @@ const isMatch = isPathMatchCreator(path);
 				--accent-width: 5px;
 			}
 
+			// IMPORTANT: Unlike traditional BEM, we know that this element
+			// will always descend the above (and relies directly on it's CSS properties)
 			&__link {
+				@extend .link;
+
 				position: relative;
 				display: block;
 				padding: var(--spacing-3) var(--spacing-5);
 				text-decoration: none;
 				font-size: var(--font-size-4);
 				font-weight: 500;
-				color: var(--color);
-
-				&:visited {
-					color: var(--color);
-				}
-
 				transition: color var(--transition-1);
 
 				// accent block
@@ -116,6 +122,19 @@ const isMatch = isPathMatchCreator(path);
 					background-color: var(--accent);
 					transition: background-color var(--transition-2), width var(--transition-2);
 				}
+			}
+		}
+
+		&__footer {
+			padding: var(--spacing-3);
+			background-color: var(--color-header);
+			border-top: solid 1px var(--color-primary-lightest);
+			font-size: var(--font-size-2);
+
+			// REFLECT: SCSS isn't a requirement for vBEM, but we might benefit
+			// from composites (using mixins)
+			a {
+				@extend .link;
 			}
 		}
 	}

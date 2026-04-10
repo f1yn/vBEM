@@ -54,11 +54,19 @@ This document details the architectural reasoning behind specific decisions made
 }
 ```
 
-## Specificity Wars
+## Specificity Wars & The Invisible Debt
 
-**Context:** Standard BEM often leads to deep nesting and specificity conflicts when modifiers need to override base styles.
+**Context:** How modern styling frameworks attempt—and fail—to manage overlapping states and CSS precedence.
 
-**Reasoning:** vBEM eliminates specificity wars by shifting visual logic into CSS variables. Instead of increasing CSS selector specificity (e.g., `.nav-link--active:hover { color: blue; }`), vBEM updates the variable within the conditional selector, keeping the cascade entirely flat.
+**Reasoning:** Many developers who transitioned to utility-first frameworks (like Tailwind) did so to escape "Specificity Wars"—the nightmare of writing increasingly complex CSS selectors (`.card.is-active .btn:hover`) just to force a style to apply.
+
+Tailwind "solved" this problem by abandoning the CSS cascade entirely. They stopped fighting the war by retreating to the HTML, which resulted in massive DOM pollution and unreadable class strings. Standard BEM, on the other hand, keeps the clean DOM but still triggers specificity wars when modifiers inevitably need to override base styles.
+
+vBEM offers a third path: **Ending the war mathematically.**
+
+Instead of escalating CSS selector specificity to apply a change, vBEM updates a local CSS variable within a conditional selector. Because modifiers and interaction states in vBEM _only ever reassign variables_, the compiled CSS maintains a perfectly flat specificity (e.g., `0,1,0` for pseudo-classes, `0,2,0` for compound classes).
+
+It is extremely difficult to trigger an `!important` war using this architecture. You get the flat, predictable safety of Tailwind, but retain the clean DOM and semantic cascade of standard CSS.
 
 ```scss
 // global
@@ -87,8 +95,8 @@ This document details the architectural reasoning behind specific decisions made
 
 	// 4. ELEMENTS, DELEGATION & MODIFIERS (The Mutations & Routing)
 	// IMPORTANT: Because we only update variables, the compiled CSS maintains
-	// a uniform specificity of 0,1,0. It is mathematically impossible to trigger
-	// an !important war using this architecture.
+	// a uniform specificity. The last rule defined simply wins.
+	// No deep targeting, no !important.
 	&:hover {
 		--text-color: var(--color-blue);
 		--bg-color: var(--color-light-grey);
@@ -271,61 +279,8 @@ pre {
 
 ## AI Reasoning and Predictability
 
-**Context:** Why this architecture is optimized for Large Language Models (LLMs) and Agentic code generation.
+**Context:** Why this architecture is optimized for Large Language Models (LLMs) and Agentic workflows.
 
-**Reasoning:** LLMs predict and generate code successfully when patterns are mathematically consistent and contextual references are explicit. A universally understood component, like a form input, highlights this perfectly. When an AI is asked to add an "error" state to a generic component, it often hallucinates raw CSS properties (`border: red !important`). In vBEM, the strict variable contract mathematically bounds the AI's output.
+**Reasoning:** LLMs successfully generate code when the "Signal-to-Noise" ratio is high. Standard utility frameworks dilute a model's attention by scattering visual states across the DOM. When an AI adds an "error" state to a generic utility-based component, it must parse thousands of HTML tokens to find the correct nodes, often resulting in hallucinated overrides and broken rendering.
 
-```scss
-// global
-:root {
-	--color-grey-1: #e2e8f0;
-	--color-grey-2: #94a3b8;
-	--color-blue: #3b82f6;
-	--color-red: #ef4444;
-	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-// components
-.form-input {
-	// 1. VARIANCE PROPERTIES (The Contract)
-	// IMPORTANT: An LLM reads this block and instantly understands the exact
-	// API surface of this component. It does not have to hallucinate properties.
-	--border-color: var(--color-grey-1);
-	--text-color: var(--color-grey-2);
-	--focus-ring-width: 0px;
-	--focus-ring-color: transparent;
-	--input-shadow: var(--shadow-sm);
-
-	// 2. STATIC PROPERTIES (The Physics)
-	width: 100%;
-	border-style: solid;
-	border-width: 1px;
-	outline: none;
-
-	// 3. PROPERTY SET (The Execution)
-	color: var(--text-color);
-	border-color: var(--border-color);
-	box-shadow:
-		var(--input-shadow),
-		0 0 0 var(--focus-ring-width) var(--focus-ring-color);
-	transition:
-		border-color 0.2s,
-		box-shadow 0.2s;
-
-	// 4. ELEMENTS, DELEGATION & MODIFIERS (The Mutations & Routing)
-	&--error {
-		// IMPORTANT: When prompted to generate an error state, an AI will deterministically
-		// mutate these exact variables instead of blindly appending raw CSS overrides.
-		--border-color: var(--color-red);
-		--text-color: var(--color-red);
-	}
-
-	&:focus {
-		// Interaction states safely modify complex visual outputs (like composite box-shadows)
-		// by simply updating the variable values established in the contract.
-		--border-color: var(--color-blue);
-		--focus-ring-width: 3px;
-		--focus-ring-color: var(--color-blue);
-	}
-}
-```
+In vBEM, the strict variable contract bounds the AI's output mathematically. The component's entire mutable API is declared in the first 10 lines of the SCSS block. The agent reads a fraction of the tokens, focuses its attention exclusively on the variable schema, and deterministically mutates the values. This predictability drastically reduces context-window bloat and provides a mathematically verifiable foundation for automated UI generation.

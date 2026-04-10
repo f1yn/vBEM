@@ -76,18 +76,12 @@ $breakpoints: (
 	}
 }
 
-@mixin whenDark($allDark: true) {
+@mixin whenDark() {
 	@media (prefers-color-scheme: dark) {
 		@content;
 	}
 
 	:root[data-theme="dark"] & {
 		@content;
-	}
-
-	@if $allDark {
-		:root[data-theme="darkest"] & {
-			@content;
-		}
 	}
 }

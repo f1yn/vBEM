@@ -1,0 +1,19 @@
+// TOKENS: Extends for common functionality that doesn't have any inherit nesting
+// I.e, the element only applies state in one direction
+
+.link {
+	--color: inherit;
+	--decoration: underline;
+
+	text-decoration: var(--decoration);
+	color: var(--color);
+	font-weight: 600;
+
+	&:visited {
+		color: var(--color);
+	}
+
+	&:hover {
+		--decoration: none;
+	}
+}

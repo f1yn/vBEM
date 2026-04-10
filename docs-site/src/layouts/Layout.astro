@@ -16,7 +16,7 @@ const { title = "vBEM Documentation", class: className, hideSidebar } = Astro.pr
 const { pathname } = Astro.url;
 
 const rootFlags = [
-	pathname === '/' && 'home-page',
+	pathname === '/' && 'home',
 	pathname.startsWith('/doc') && 'doc-page',
 	pathname === '/intro' && 'intro-page',
 
@@ -67,7 +67,7 @@ const rootFlags = [
 		}
 
 		// IMPORTANT: Root layout modifiers
-		:root.home-page & {
+		:root.home & {
 			--sidebar-scale: 0;
 		}
 	}

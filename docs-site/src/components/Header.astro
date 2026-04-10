@@ -27,12 +27,15 @@ const { class: className } = Astro.props;
 </header>
 
 <style lang="scss" is:global>
+	@use '@/styles/tokens.scss' as *;
+
 	.header {
 		padding: 0 var(--spacing-4);
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		background-color: var(--color-header);
+		border-bottom: solid 1px var(--color-primary-lightest);
 
 		& > div {
 			display: flex;
@@ -47,9 +50,18 @@ const { class: className } = Astro.props;
 
 			display: var(--display);
 
+			// IMPORTANT: Notice how don't have to compete with specificity here?
+			// It's normalized using the flatter specificity, so the breakpoint modulates
+			// based on order! (yum yum)
 			:root.alive & {
 				@include breakpointBefore('tablet') {
 					--display: flex;
+				}
+			}
+
+			:root.home & {
+				@include breakpointBefore('tablet') {
+					--display: none;
 				}
 			}
 		}
@@ -63,6 +75,8 @@ const { class: className } = Astro.props;
 		}
 
 		&__link {
+			@extend .link;
+
 			--size: 52px;
 			--opacity: .5;
 
@@ -77,11 +91,6 @@ const { class: className } = Astro.props;
 
 			&:hover {
 				--opacity: 1;
-			}
-
-			&,
-			&:visited {
-				color: inherit;
 			}
 
 			&--flynn {

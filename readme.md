@@ -7,25 +7,31 @@
 
 ## Overview
 
-vBEM (Variance-Based Block Element Modifier) is a design system architecture built for delivery velocity, developer ergonomics, and long-term scaling.
+vBEM (Variance-Based Block Element Modifier) is a design system architecture built for delivery velocity, developer ergonomics, and long-term scale.
 
-It bridges the gap between standard BEM specificity management and utility-first fragmentation. By treating CSS variables as absolute visual contracts, vBEM provides a single source of truth for component logic—ensuring strict consistency while remaining highly readable for both human developers and LLM/AI agents.
+It bridges the gap between standard BEM specificity management and utility-first fragmentation. By treating CSS variables as absolute visual contracts: vBEM provides a single source of truth for component logic - ensuring structured consistency while remaining highly readable for both human developers and LLM/AI agents.
 
 ## Why vBEM?
 
-Modern styling often forces teams to choose between semantic, cascading CSS (which scales poorly) and utility-first frameworks like Tailwind (which provide safety but pollute the DOM and scatter logic). vBEM offers a third path: **Velocity through constrained scoping.**
+Modern web design often forces teams to choose between semantic, cascading CSS (which scales poorly) and utility-first frameworks like Tailwind (which provide safety but pollute the DOM and scatter logic). vBEM offers a third path: **Velocity through constraint.**
 
 ### 1. Developer Ergonomics & Cognitive Locality
 
-Tailwind's ergonomics rely on never leaving the HTML file, but this results in massive, unreadable class strings scattered across multiple React/Vue components. vBEM provides **cognitive locality**. A developer (or an AI) can open a single SCSS block, read the variable "contract" at the top, and immediately understand the component's exact mutable surface area without hunting through the DOM.
+Tailwind's ergonomics rely on never leaving the HTML file, but this results in massive, unreadable class strings scattered across multiple React/Vue components. vBEM provides **cognitive locality**. Both developers and agents can open a single SCSS block, read the variable "contract" at the top, and immediately understand the component's exact mutable surface area without hunting through the DOM.
 
 ### 2. Scoped Delegation (No Prop-Drilling)
 
-vBEM allows parent components to control child primitives and sub-blocks exclusively through variable mapping. Instead of passing React props or writing deep CSS overrides, a parent block maps its contextual variables directly into the child's exposed variable API. This drastically reduces redundant BEM classes in your HTML.
+vBEM allows parent components to control child primitives and sub-blocks exclusively through variable mapping. Instead of passing React props or writing deep CSS overrides, a parent block maps its contextual variables directly into the child's exposed variable API. This drastically reduces redundant BEM classes in your HTML, and allows for more expressive relationships between different components.
 
-### 3. AI & LLM Predictability
+### 3. Output consistency (for Agentic systems)
 
-As teams increasingly rely on AI to generate and refactor UI components, scattered utility classes and implicit global imports lead to hallucinations. vBEM enforces a strict, self-contained variable contract. An AI model can reliably predict exactly which property changes when a modifier is applied, resulting in safe, deterministic code generation.
+As teams increasingly rely on autonomous agents to generate and refactor UI components, scattered utility classes lead to hallucinations and inconsistency. vBEM enforces a strict, self-contained variable contract. An AI model can reliably predict exactly which property changes when a modifier is applied, resulting in safe, deterministic code generation without inventing raw CSS properties
+
+### 4. Attention Density & Small-Model Capability (for Agentic systems)
+
+Transformer attention mechanisms degrade when forced to parse massive, noisy DOM strings (like utility-first HTML). By scattering state logic across markup, frameworks like Tailwind dilute the LLM's attention, requiring massive frontier models just to avoid hallucinating a hover state.
+
+vBEM creates **High Attention Density**. By centralizing the component's entire visual API into a strict variable contract at the top of the SCSS block, the signal-to-noise ratio is perfected. The AI does not need to parse DOM structures or search for scattered utility classes; it simply maps state to the established variables. This mechanical optimization allows even smaller, locally-hosted models (7B–14B parameters) to execute complex, multi-element UI refactors flawlessly.
 
 ## The vBEM Structure
 
@@ -121,12 +127,23 @@ pre {
 }
 ```
 
+**The Resulting HTML (Clean DOM & Scoped Delegation)**
+
+```jsx
+const CtaBlock = ({ isLarge }) => (
+	<div className={clsx(`cta-block`, isLarge && "cta-block--large")}>
+		<p>Typography is delegated by the parent contract.</p>
+		<button className="button">Colors are delegated safely.</button>
+	</div>
+);
+```
+
 ## Architectural Safety Guarantees
 
 By following these architectural patterns, teams guarantee that their CSS remains scalable, predictable, and free of specificity wars:
 
 1. **The Visual Contract:** All mutable values must be explicitly declared as variables at the top of the block. If a value does not variate, it remains a static property.
-2. **State Mutation:** Interaction states (`&:hover`) and BEM modifiers (`&--variant`) mutate variables. They must never apply raw CSS properties directly.
+2. **State Mutation:** Interaction states (`&:hover`) and BEM modifiers (`&--variant`) mutate variables. They must avoid applying raw CSS properties directly.
 3. **Flat Specificity:** The `!important` flag is obsolete. Variance is achieved through variable reassignment, ensuring the cascade remains perfectly flat.
 4. **Explicit Dependencies:** Code blocks must explicitly show their variable lineage. Do not rely on "ghost" imports; map globals to locals explicitly.
 5. **Read-Only Globals:** Components may consume global tokens via `var()`, but local scopes must never mutate a global token directly.
