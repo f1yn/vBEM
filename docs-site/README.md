@@ -1,6 +1,6 @@
 # vBEM Documentation Site
 
-The official documentation site for the vBEM (Variance-Based Block Element Modifier) styling protocol.
+The official documentation site for the vBEM (Variance-Based Block Element Modifier) styling protocol
 
 ## Quick Start
 
@@ -14,12 +14,12 @@ npm run dev
 # Build for production
 npm run build
 
-# Postbuild: Concatenate markdown files
-npm run build automatically runs the postbuild script which concatenates all markdown files from the `docs/` directory into `dist/llms.txt`. This file is a single concatenated document suitable for LLM context injection.
-
 # Preview production build
 npm run preview
 ```
+
+> **IMPORTANT:**
+> `npm run build` automatically runs the `prebuild` script which concatenates all markdown files from the`docs/`directory (including the root `readme`) into `public/llms.txt`. This file is a single concatenated document suitable for LLM context injection. The dev command will watch these same files
 
 ## Project Structure
 
