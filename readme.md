@@ -109,8 +109,8 @@ pre {
 		--text-size: var(--block-text-size);
 	}
 
-	& > .button {
-		// Scoped Delegation prevents the need for bloated React prop-drilling or
+	&__button {
+		// Scoped Delegation (using BEM mixing) prevents the need for bloated React prop-drilling or
 		// messy CSS specificity overrides like `.cta-block .button { ... }`.
 		--background: var(--accent-color);
 		--color: var(--button-color);
@@ -133,7 +133,9 @@ pre {
 const CtaBlock = ({ isLarge }) => (
 	<div className={clsx(`cta-block`, isLarge && "cta-block--large")}>
 		<p>Typography is delegated by the parent contract.</p>
-		<button className="button">Colors are delegated safely.</button>
+		<button className="button cta-block__button">
+			Colors are delegated safely.
+		</button>
 	</div>
 );
 ```

@@ -14,6 +14,9 @@ npm run dev
 # Build for production
 npm run build
 
+# Postbuild: Concatenate markdown files
+npm run build automatically runs the postbuild script which concatenates all markdown files from the `docs/` directory into `dist/llms.txt`. This file is a single concatenated document suitable for LLM context injection.
+
 # Preview production build
 npm run preview
 ```

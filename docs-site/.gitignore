@@ -1,5 +1,8 @@
 .astro/
 node_modules/
 dist/
-
+.wrangler/
 .DS_Store
+
+# NOTE: Auto-generated!
+public/llms.txt

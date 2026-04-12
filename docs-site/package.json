@@ -5,7 +5,10 @@
 	"description": "vBEM documentation site",
 	"type": "module",
 	"scripts": {
-		"dev": "astro dev",
+		"dev": "concurrently 'npm:dev:astro' 'npm:dev:llms.txt'",
+		"dev:astro": "astro dev",
+		"dev:llms.txt": "tsx ./scripts/generateLLMTxt.ts --watch",
+		"prebuild": "tsx ./scripts/generateLLMTxt.ts",
 		"build": "astro build",
 		"preview": "astro preview",
 		"deploy": "npx wrangler pages deploy ./dist --project-name=vbem"
@@ -14,8 +17,13 @@
 	"license": "MIT",
 	"dependencies": {
 		"@astrojs/sitemap": "^3.7.2",
-		"@lucide/astro": "^1.7.0",
-		"astro": "^6.1.4",
-		"sass": "^1.77.0"
+		"@lucide/astro": "^1.8.0",
+		"astro": "^6.1.5",
+		"sass": "^1.99.0"
+	},
+	"devDependencies": {
+		"concurrently": "9.2.1",
+		"chokidar": "^5.0.0",
+		"tsx": "^4.21.0"
 	}
 }
