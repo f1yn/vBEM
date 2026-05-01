@@ -49,6 +49,12 @@ Instead, use **BEM Mixing**. Apply both the base component class and a contextua
 }
 ```
 
+### 1.1 A Quick Note on Source Ordering and Components
+
+Because vBEM resolves variance through flat CSS specificity, the final source-order of your stylesheets dictates how classes are applied. For example, if the `.button` styles are defined after the `.header__button` mixin, the properties of `.button` will take precedence over the overrides, as the overrides were defined earlier in the source ordering.
+
+At scale, vBEM leverages structured component architecture, meaning that BEM mixing generally only modifies primitive (**Core**) components instead of other more complicated ones (**Composite** components, which are representative of complex arrangements of **Core** components, often serving a direct business case). Ensuring that your **Core Components** (like `.button` or `.input`) are imported _before_ your **Composite Components** (like `.header` or `.data-grid`) is essential for consistent behaviour as the application scales.
+
 ## 2. Parent-Driven State (Updating Multiple Elements)
 
 Instead of passing an `isError` boolean to a Label, an Input, and a Message component separately, you should apply a single state modifier to their parent wrapper. By changing the parent's variable contract, all internal elements update automatically.
