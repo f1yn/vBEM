@@ -71,6 +71,12 @@ const rootFlags = [
 		// IMPORTANT: Root layout modifiers
 		:root.home & {
 			--sidebar-scale: 0;
+
+			// IMPORTANT: For the home page, allow forcing the menu if the user
+			// tabs over the menu (quick optimization for readers)
+			&:has(.sidebar:focus-within) {
+				--sidebar-scale: 1;
+			}
 		}
 	}
 </style>

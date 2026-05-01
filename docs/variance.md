@@ -37,6 +37,7 @@ Instead, use **BEM Mixing**. Apply both the base component class and a contextua
 
 // 2. The Contextual Parent
 .header {
+	// Static value, does not variate
 	background-color: #000000;
 
 	// BEM Mixing: Mutates the button's contract securely.
@@ -70,9 +71,11 @@ Instead of passing an `isError` boolean to a Label, an Input, and a Message comp
 	&__label {
 		color: var(--accent-color);
 	}
+
 	&__input {
 		border-color: var(--border-color);
 	}
+
 	&__message {
 		display: var(--message-display);
 		color: var(--accent-color);
@@ -118,6 +121,8 @@ Instead, use **Hierarchical Elements**. The parent updates a local variable when
 	// 💥 The Variable Route
 	// The child naturally inherits the mutated variables without deep CSS targeting.
 	&__link {
+		// NOTE: That instead of simply cascading the color, we apply the attribute to
+		// exactly to where it's needed. We can delineate other colors as needed.
 		color: var(--item-color);
 
 		&::after {
@@ -148,13 +153,13 @@ Do not use React/Vue inline styles for raw CSS properties. Instead, pass dynamic
 ```scss
 // global
 :root {
-	--color-blue-fallback: #3b82f6;
+	--color-blue: #3b82f6;
 }
 
 // components
 .profile-card {
 	// Intercept the inline Root Prop. Always provide a system token fallback.
-	--brand-color: var(--user-brand-color, var(--color-blue-fallback));
+	--brand-color: var(--user-brand-color, var(--color-blue));
 
 	& > .button {
 		// Map the JS data directly into the nested button's API
@@ -165,7 +170,7 @@ Do not use React/Vue inline styles for raw CSS properties. Instead, pass dynamic
 
 ## 5. Global App State & Mathematical Layouts
 
-Passing a boolean prop (like `isMobileMenuOpen`) down through 5 levels of the DOM to hide a layout column is an anti-pattern. Instead, add a **Root Flag** (a class on the `<html>` or `<body>` tag) and let the vBEM component intercept it locally.
+Passing a boolean prop (like `isMobileMenuOpen`) down through 5 levels of the DOM to hide a layout column is an anti-pattern. Instead, add a **Root Flag** (a class on the `<html>` or `<body>` tag) and let the vBEM component intercept it locally. Because we are only mutating known attributes within a targeted component scope, we limit unwanted side effects.
 
 When you need to collapse layout space, do not use `display: none`. Use a **Mathematical Toggle** (a variable acting as a `1` or `0` multiplier) to securely collapse physical space.
 
@@ -189,10 +194,19 @@ When you need to collapse layout space, do not use `display: none`. Use a **Math
 	// Watch the global app state and safely collapse the layout math.
 	:root.mobile-hidden & {
 		--sidebar-scale: 0;
+
+		// Example edge case fix. For accessibility, we can modify the component
+		// state by detecting active states of it's children. In this case, because
+		// the sidebar is progressively enhanced, we opt to show the sidebar
+		// if reader or keyboard indexes over it.
+		&:has(.sidebar:focus-within) {
+			--sidebar-scale: 1;
+		}
 	}
 
-	@include breakpointBefore("tablet") {
-		--sidebar-scale: 0; // Automatically collapses on mobile devices
+	@media screen and (max-width: 800px) {
+		// Automatically collapses on mobile devices
+		--sidebar-scale: 0;
 	}
 }
 ```
@@ -219,6 +233,9 @@ Always define your states in the following order:
 	// 1. VARIANCE PROPERTIES
 	--bg-color: var(--color-blue);
 	--cursor-state: pointer;
+
+	background-color: var(--bg-color);
+	cursor: var(--cursor-state);
 
 	// 4. ELEMENTS, DELEGATION & MODIFIERS
 

@@ -71,6 +71,12 @@ const isMatch = isPathMatchCreator(path);
 					--box-shadow: 5px 8px 12px rgba(0,0,0, .2);
 					--right: calc(var(--sidebar-size) * -1);
 				}
+
+				// IMPORTANT: Instead of mapping an additional virtual (inert) state,
+				// If the user key tabs into one of the tabs, simply show the sidebar.
+				&:focus-within {
+					--right: calc(var(--sidebar-size) * -1);
+				}
 			}
 		}
 
